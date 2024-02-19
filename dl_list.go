@@ -92,13 +92,26 @@ func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
 func (ls *d_list) dLength() int {
 	acc := 0
 	for {
-		if ls.head.data == nil {
+		if ls.IsEmpty() {
 			return acc
 		} else {
 			acc += 1
-			ls.head = ls.head.next
+			ls = ls.Rest()
 		}
-		return acc
+	}
+}
+
+func (ls *d_list) Rest() *d_list {
+	if ls.IsEmpty() {
+		return Empty()
+	} else {
+		if ls.head.next == nil {
+			return Empty()
+		} else {
+			ls.head.next.prev = nil
+			ls.head = ls.head.next
+			return ls
+		}
 	}
 }
 
@@ -110,14 +123,16 @@ func main() {
 	ls.PushBack("haus")
 	ls.PushBack("maus")
 	ls.PushFront("keks")
-	fmt.Printf("ls: %v \n", ls)
-	fmt.Printf("head.next.data: %v \n", ls.head.next.data)
-	fmt.Printf("head.next.next: %v \n", ls.head.next.next)
-	fmt.Printf("last.data: %v \n", ls.last.data)
+	// fmt.Printf("ls: %v \n", ls)
+	// fmt.Printf("head.next.data: %v \n", ls.head.next.data)
+	// fmt.Printf("head.next.next: %v \n", ls.head.next.next)
+	// fmt.Printf("last.data: %v \n", ls.last.data)
 
 	ls.Draw()
 	list.Draw()
 	newList := list.appendList(ls)
 	newList.Draw()
-	fmt.Printf("length: %v", newList.dLength())
+	rest := newList.Rest()
+	rest.Draw()
+	fmt.Printf("length: %v \n", newList.dLength())
 }

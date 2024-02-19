@@ -28,17 +28,16 @@ func isEmpty(ls list) bool {
 	return ls.head == nil
 }
 
-func pushFront(data string, v list) list {
-	l := create(data)
-	l.head.next = v.head
-	return l
+func pushFront(data string, v *list) {
+	node := createNode(data)
+	node.next = v.head
+	v.head = &node
 }
 
 func first(ls list) *node {
 	return ls.head
 }
 
-// is -if isEmpty(ls) { return ls } and return emptyList()- the same?
 func rest(ls list) list {
 	if isEmpty(ls) {
 		return ls
@@ -78,57 +77,49 @@ func len(ls list) int {
 }
 
 func last(ls list) *node {
-	// can I remove this when I add it to the loop?
-	// if ls.head == nil {
-	// 	return nil
-	// }
-
 	cur := ls.head
 
 	for {
-		if cur == nil || cur.next == nil {
-			return cur
+		if cur.next == nil {
+			break
 		} else {
 			cur = cur.next
 		}
 	}
+	return cur
 }
 
+// append doesn't work if you  append the same list to the same list
+//
+//	infiniteloop, is there any workaround switching out a new end? is this even a usecase?
 func append(ls1 list, ls2 list) list {
 	l := last(ls1)
 	l.next = ls2.head
 	return ls1
 }
 
-// ls = 1 > 2 > 3 > 4
-// reverse(rest(ls)) = 4 > 3 > 2
-// func reverse(ls list) list {
-// 	if isEmpty(ls) {
-// 		return emptyList()
-// 	} else {
-// 		if ls.head.next == nil {
-// 			return ls
-// 		} else {
+func reverse(ls list) list {
+	rev := emptyList()
+	cur := ls.head
 
-// 			// h := first(ls)
-// 			// t := rest(ls)
-// 			// return pushFront(h.data, v list)
-// 		}
-// 	}
-// }
+	for {
+		if cur == nil {
+			return rev
+		} else {
+			pushFront(cur.data, &rev)
+			cur = cur.next
+		}
+	}
+}
 
 func main() {
 	m := create("baum") // is a list
-	o := pushFront("meise", m)
-	n := create("maus")
-	p := pushFront("haus", n)
-	fmt.Printf("len of o: %v \n", len(o))
-	fmt.Printf("list:%v \n", o)
-	fmt.Printf("first:%v \n", first(o))
-	fmt.Printf("rest:%v \n", rest(o))
-	fmt.Printf("last: %v \n", last(o))
-	draw(o)
-	draw(p)
-	// fmt.Printf("append: %v \n", append(p, o))
-	draw(append(p, o))
+	pushFront("meise", &m)
+	pushFront("maus", &m)
+	pushFront("haus", &m)
+	fmt.Printf("len of o: %v \n", len(m))
+	fmt.Printf("list:%v \n", m)
+	fmt.Printf("rest:%v \n", rest(m))
+	draw(m)
+	draw(reverse(m))
 }

@@ -88,6 +88,20 @@ func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
 	return ls1
 }
 
+// need rest for this
+func (ls *d_list) dLength() int {
+	acc := 0
+	for {
+		if ls.head.data == nil {
+			return acc
+		} else {
+			acc += 1
+			ls.head = ls.head.next
+		}
+		return acc
+	}
+}
+
 // -push front-, -appendList-, dLength, reverse(inplace), queues & stacks (time complexity)
 
 func main() {
@@ -105,4 +119,5 @@ func main() {
 	list.Draw()
 	newList := list.appendList(ls)
 	newList.Draw()
+	fmt.Printf("length: %v", newList.dLength())
 }

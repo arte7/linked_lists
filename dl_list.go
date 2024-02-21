@@ -102,20 +102,22 @@ func (ls *d_list) dLength() int {
 	}
 }
 
-// func (ls *d_list) reverseDList() {
-// 	cur := ls.head
-// 	for {
-// 		if cur.next == nil {
-// 			break
-// 		} else {
-// 			next := cur.next
-// 			cur.next = cur.next.prev
-// 			cur.next.prev = next
-// 			cur = cur.
-// 		}
-// 	}
-// 	ls.last = ls.head
-// }
+func (ls *d_list) reverseDList() *d_list {
+	cur := ls.head
+	head := ls.head
+	ls.head = ls.last
+	ls.last = head
+
+	for {
+		if cur == ls.head {
+			return ls
+		} else {
+			next := cur.next
+			cur.next = cur
+			cur = next
+		}
+	}
+}
 
 // -push front-, -appendList-, -dLength-, reverse(inplace), queues & stacks (time complexity)
 
@@ -133,6 +135,8 @@ func main() {
 	ls.Draw()
 	list.Draw()
 	newList := list.appendList(ls)
-	newList.Draw()
 	fmt.Printf("length: %v \n", newList.dLength())
+	newList.Draw()
+	a := newList.reverseDList()
+	a.Draw()
 }

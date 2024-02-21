@@ -88,34 +88,36 @@ func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
 	return ls1
 }
 
-// need rest for this
 func (ls *d_list) dLength() int {
 	acc := 0
+	cur := ls.head
+
 	for {
-		if ls.IsEmpty() {
+		if cur == nil {
 			return acc
 		} else {
 			acc += 1
-			ls = ls.Rest()
+			cur = cur.next
 		}
 	}
 }
 
-func (ls *d_list) Rest() *d_list {
-	if ls.IsEmpty() {
-		return Empty()
-	} else {
-		if ls.head.next == nil {
-			return Empty()
-		} else {
-			ls.head.next.prev = nil
-			ls.head = ls.head.next
-			return ls
-		}
-	}
-}
+// func (ls *d_list) reverseDList() {
+// 	cur := ls.head
+// 	for {
+// 		if cur.next == nil {
+// 			break
+// 		} else {
+// 			next := cur.next
+// 			cur.next = cur.next.prev
+// 			cur.next.prev = next
+// 			cur = cur.
+// 		}
+// 	}
+// 	ls.last = ls.head
+// }
 
-// -push front-, -appendList-, dLength, reverse(inplace), queues & stacks (time complexity)
+// -push front-, -appendList-, -dLength-, reverse(inplace), queues & stacks (time complexity)
 
 func main() {
 	list := New("baum", "bert")
@@ -132,7 +134,5 @@ func main() {
 	list.Draw()
 	newList := list.appendList(ls)
 	newList.Draw()
-	rest := newList.Rest()
-	rest.Draw()
 	fmt.Printf("length: %v \n", newList.dLength())
 }

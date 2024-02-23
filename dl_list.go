@@ -103,18 +103,39 @@ func (ls *d_list) dLength() int {
 }
 
 func (ls *d_list) reverseDList() *d_list {
-	cur := ls.head
-	head := ls.head
-	ls.head = ls.last
-	ls.last = head
+	start := ls.head
+	end := ls.last
+	next := start.next
+	prev := end.prev
+
+	ls.head = end
+	ls.last = start
 
 	for {
-		if cur == ls.head {
+		if start.data == end.data {
+
 			return ls
 		} else {
-			next := cur.next
-			cur.next = cur
-			cur = next
+			next = next.next
+			prev = prev.prev
+
+			start.next = end.prev
+			fmt.Printf("start next: %v ", start.next.data)
+			start.next.prev = end
+			fmt.Printf("start prev: %v \n", start.next.prev.data)
+
+			end.prev = next
+			fmt.Printf("end prev: %v ", end.prev.data)
+			end.prev.next = start
+			fmt.Printf("next: %v \n", end.prev.next.data)
+
+			start = next
+			fmt.Printf("start: %v ", start.data)
+			fmt.Printf("nextstart: %v  \n", next.data)
+
+			end = prev
+			fmt.Printf("end: %v ", end.data)
+			fmt.Printf("endprev: %v \n", prev.data)
 		}
 	}
 }
@@ -137,6 +158,8 @@ func main() {
 	newList := list.appendList(ls)
 	fmt.Printf("length: %v \n", newList.dLength())
 	newList.Draw()
-	a := newList.reverseDList()
-	a.Draw()
+	newList.reverseDList()
+
+	// a := newList.reverseDList()
+	// a.Draw()
 }

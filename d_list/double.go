@@ -1,4 +1,4 @@
-package main
+package d_list
 
 import "fmt"
 
@@ -58,7 +58,7 @@ func (ls *d_list) Draw() {
 	fmt.Print("\n")
 }
 
-func (ls *d_list) PushFront(d interface{}) {
+func (ls *d_list) PushDFront(d interface{}) {
 	node := &d_node{data: d, next: nil, prev: nil}
 
 	if ls.IsEmpty() {
@@ -88,7 +88,7 @@ func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
 	return ls1
 }
 
-func (ls *d_list) dLength() int {
+func (ls *d_list) Length() int {
 	acc := 0
 	cur := ls.head
 
@@ -103,51 +103,36 @@ func (ls *d_list) dLength() int {
 }
 
 func (ls *d_list) reverseDList() *d_list {
-	start := ls.head
-	end := ls.last
-	next := start.next
-	prev := end.prev
+	if ls.IsEmpty() {
+		return ls
+	}
+	cur := ls.last
 
-	ls.head = end
-	ls.last = start
+	ls.last = ls.head
+	ls.head = cur
 
 	for {
-		if start.data == end.data {
-
+		if cur == nil {
 			return ls
 		} else {
-			next = next.next
-			prev = prev.prev
+			prev := cur.prev
 
-			start.next = end.prev
-			fmt.Printf("start next: %v ", start.next.data)
-			start.next.prev = end
-			fmt.Printf("start prev: %v \n", start.next.prev.data)
+			cur.prev = cur.next
+			cur.next = prev
 
-			end.prev = next
-			fmt.Printf("end prev: %v ", end.prev.data)
-			end.prev.next = start
-			fmt.Printf("next: %v \n", end.prev.next.data)
-
-			start = next
-			fmt.Printf("start: %v ", start.data)
-			fmt.Printf("nextstart: %v  \n", next.data)
-
-			end = prev
-			fmt.Printf("end: %v ", end.data)
-			fmt.Printf("endprev: %v \n", prev.data)
+			cur = cur.next
 		}
 	}
 }
 
-// -push front-, -appendList-, -dLength-, reverse(inplace), queues & stacks (time complexity)
+// -push front-, -appendList-, -dLength-, -reverse(inplace)-, queues & stacks (time complexity)
 
 func main() {
 	list := New("baum", "bert")
 	ls := Empty()
 	ls.PushBack("haus")
 	ls.PushBack("maus")
-	ls.PushFront("keks")
+	ls.PushDFront("keks")
 	// fmt.Printf("ls: %v \n", ls)
 	// fmt.Printf("head.next.data: %v \n", ls.head.next.data)
 	// fmt.Printf("head.next.next: %v \n", ls.head.next.next)
@@ -156,10 +141,7 @@ func main() {
 	ls.Draw()
 	list.Draw()
 	newList := list.appendList(ls)
-	fmt.Printf("length: %v \n", newList.dLength())
+	fmt.Printf("length: %v \n", newList.Length())
 	newList.Draw()
-	newList.reverseDList()
-
-	// a := newList.reverseDList()
-	// a.Draw()
+	newList.reverseDList().Draw()
 }

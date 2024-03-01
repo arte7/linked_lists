@@ -8,16 +8,16 @@ type d_node struct {
 	prev *d_node
 }
 
-type d_list struct {
+type List struct {
 	head *d_node
 	last *d_node
 }
 
-func Empty() *d_list {
-	return &d_list{head: nil, last: nil}
+func Empty() *List {
+	return &List{head: nil, last: nil}
 }
 
-func New(data ...interface{}) *d_list {
+func New(data ...interface{}) *List {
 	e := Empty()
 	for _, d := range data {
 		e.PushBack(d) // methodenaufruf auf pointer auf structuren oder auf strukturen
@@ -25,11 +25,34 @@ func New(data ...interface{}) *d_list {
 	return e
 }
 
-func (ls *d_list) IsEmpty() bool {
+func (ls *List) Front() interface{} {
+	if ls.IsEmpty() {
+		return nil
+	}
+
+	return ls.head.data
+}
+
+func (ls *List) IsEmpty() bool {
 	return ls.head == nil && ls.last == nil
 }
 
-func (ls *d_list) PushBack(d interface{}) {
+func (ls *List) PopFront() interface{} {
+	if ls.IsEmpty() {
+		return nil
+	} else if ls.head.next == nil {
+		d := ls.head
+		ls.head = nil
+		ls.last = ls.head
+		return d.data
+	} else {
+		d := ls.head
+		ls.head = ls.head.next
+		return d.data
+	}
+}
+
+func (ls *List) PushBack(d interface{}) {
 	node := &d_node{data: d, next: nil, prev: nil}
 
 	if ls.IsEmpty() {
@@ -42,7 +65,7 @@ func (ls *d_list) PushBack(d interface{}) {
 	}
 }
 
-func (ls *d_list) Draw() {
+func (ls *List) Draw() {
 	if ls.IsEmpty() {
 		fmt.Print("■")
 	}
@@ -58,7 +81,7 @@ func (ls *d_list) Draw() {
 	fmt.Print("\n")
 }
 
-func (ls *d_list) PushDFront(d interface{}) {
+func (ls *List) PushDFront(d interface{}) {
 	node := &d_node{data: d, next: nil, prev: nil}
 
 	if ls.IsEmpty() {
@@ -71,7 +94,7 @@ func (ls *d_list) PushDFront(d interface{}) {
 	}
 }
 
-func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
+func (ls1 *List) appendList(ls2 *List) *List {
 	if ls2.IsEmpty() {
 		ls2.head = ls1.head
 		ls2.last = ls1.last
@@ -88,7 +111,7 @@ func (ls1 *d_list) appendList(ls2 *d_list) *d_list {
 	return ls1
 }
 
-func (ls *d_list) Length() int {
+func (ls *List) Length() int {
 	acc := 0
 	cur := ls.head
 
@@ -102,7 +125,7 @@ func (ls *d_list) Length() int {
 	}
 }
 
-func (ls *d_list) reverseDList() *d_list {
+func (ls *List) reverseDList() *List {
 	if ls.IsEmpty() {
 		return ls
 	}
@@ -124,8 +147,6 @@ func (ls *d_list) reverseDList() *d_list {
 		}
 	}
 }
-
-// -push front-, -appendList-, -dLength-, -reverse(inplace)-, queues & stacks (time complexity)
 
 func main() {
 	list := New("baum", "bert")

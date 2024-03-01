@@ -5,6 +5,7 @@ import "fmt"
 type node struct {
 	Data interface{}
 	next *node
+	prio int32
 }
 
 type List struct {
@@ -30,6 +31,25 @@ func CreateNode(data interface{}) *node {
 
 func (ls *List) IsEmpty() bool {
 	return ls.head == nil
+}
+
+func (ls *List) SortedInsert(item interface{}, prio int32) {
+	if ls.IsEmpty() {
+		ls.head = &node{Data: item, next: nil, prio: prio}
+	} else {
+		node := &node{Data: item, next: nil, prio: prio}
+		cur := ls.head
+		if cur.prio < node.prio {
+			ls.head = node
+			node.next = cur
+		} else if cur.prio == node.prio {
+			for cur.prio == node.prio {
+				cur = cur.next
+			}
+
+		}
+
+	}
 }
 
 func (ls *List) PushFront(data interface{}) {
@@ -97,7 +117,7 @@ func (ls *List) Reverse() {
 }
 
 func main() {
-	m := New("baum") // is a list
+	m := New("baum")
 	m.PushFront("meise")
 	m.PushFront("maus")
 	m.PushFront("haus")

@@ -33,22 +33,42 @@ func (ls *List) IsEmpty() bool {
 	return ls.head == nil
 }
 
+func (ls *List) ToArray() []interface{} {
+	var r []interface{}
+
+	if ls.IsEmpty() {
+		return r
+	}
+	cur := ls.head
+
+	for cur != nil {
+		r = append(r, cur.Data)
+		cur = cur.next
+	}
+	return r
+}
+
 func (ls *List) SortedInsert(item interface{}, prio int32) {
 	if ls.IsEmpty() {
 		ls.head = &node{Data: item, next: nil, prio: prio}
 	} else {
-		node := &node{Data: item, next: nil, prio: prio}
+		item := &node{Data: item, next: nil, prio: prio}
 		cur := ls.head
-		if cur.prio < node.prio {
-			ls.head = node
-			node.next = cur
-		} else if cur.prio == node.prio {
-			for cur.prio == node.prio {
-				cur = cur.next
+		var prev *node = nil
+		for cur != nil {
+			if cur.prio < item.prio {
+				item.next = cur
+				if prev == nil {
+					ls.head = item
+				} else {
+					prev.next = item
+				}
+				return
 			}
-
+			prev = cur
+			cur = cur.next
 		}
-
+		prev.next = item
 	}
 }
 

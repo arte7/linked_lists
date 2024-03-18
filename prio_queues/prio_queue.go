@@ -1,4 +1,4 @@
-package prioqueue
+package prio_queues
 
 import "data_structures/s_list"
 
@@ -15,5 +15,9 @@ func (q PrioQueue) IsEmpty() bool {
 }
 
 func (q PrioQueue) Enqueue(item interface{}, prio int32) {
+	q.queue.SortedInsert(item, prio)
+}
 
+func (q PrioQueue) Dequeue() interface{} {
+	return q.queue.PopFront()
 }

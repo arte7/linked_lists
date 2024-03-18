@@ -111,16 +111,39 @@ func (ls1 *List) appendList(ls2 *List) *List {
 	return ls1
 }
 
+// func (ls *List) Length() int {
+// 	acc := 0
+// 	cur := ls.head
+
+// 	for {
+// 		if cur == nil {
+// 			return acc
+// 		} else {
+// 			acc += 1
+// 			cur = cur.next
+// 		}
+// 	}
+// }
+
 func (ls *List) Length() int {
-	acc := 0
-	cur := ls.head
+	if ls.IsEmpty() {
+		return 0
+	}
+	
+	acc := 2
+	p1 := ls.head
+	p2 := ls.last
 
 	for {
-		if cur == nil {
+		if p1 == p2 {
+			acc -= 1
+			return acc
+		} else if p1.next == p2 {
 			return acc
 		} else {
-			acc += 1
-			cur = cur.next
+			acc += 2
+			p1 = p1.next
+			p2 = p2.prev
 		}
 	}
 }
